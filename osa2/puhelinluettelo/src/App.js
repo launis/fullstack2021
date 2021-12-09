@@ -24,13 +24,10 @@ const App = () => {
 
   
   const handleSearchChange = (event) => {setNewSearch(event.target.value)}
-
   const handleNameChange = (event) => {setNewName(event.target.value)}
   const handleNumberChange = (event) => {setNewNumber(event.target.value)}
 
-
-  const toggleDelOf = ({ person }) => {
-    console.log(`importance of ${person} needs to be toggled`)
+  const delPerson = ({ person }) => {
     if (window.confirm(`Are you sure you want to delete ${person.name}?`)) {
       personService
         .del(person.id)
@@ -44,30 +41,34 @@ const App = () => {
     event.preventDefault()
 
     const personObject = {name: newName, number: newNumber}
-
     if (persons.some((p) => p.name === newName)) 
-      {window.alert(`${newName} is already added to phonebook`)}
-    else {
-      
-    setPersons(persons.concat(personObject))}
-    personService
-      .create(personObject)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')
-      })
+      {
+      const person = persons.filter((p) => p.name === newName)[0]
+      if (window.confirm(`${newName} is already added to phonebook, replase with new number?`)) 
+        {
+          const updatedPerson = { ...person, number: newNumber }
+          personService
+            .update(person.id, updatedPerson)
+            .then((returnedPerson) => {
+              setPersons(persons.filter((p) => p.id !== person.id).concat(returnedPerson))
+              setNewName('')
+              setNewNumber('')
+            })}
+      }
+    else
+    {
+      personService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })}
   }
-
-
 
 return (
     <>
       <Header header={'Phonebook'} />
-
-
-
-
 
       <Filter
         onChange={handleSearchChange}
@@ -84,14 +85,12 @@ return (
         addPerson={addPerson}
       />
 
-
-
       <Header header={'Numbers'} />
 
       <Persons
         persons={persons} 
         newSearch={newSearch}
-        toggleDel={toggleDelOf}
+        delPerson={delPerson}
       />
 
 
