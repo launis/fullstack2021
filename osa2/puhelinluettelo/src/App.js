@@ -6,6 +6,7 @@ import PersonForm from "./Components/PersonForm"
 import Filter from "./Components/Filter"
 import Persons from "./Components/Persons"
 import Notification from "./Components/ErrorMessage"
+import Errors from "./Components/ErrorMessage"
 import personService from "./Services/PersonsServices"
 
 
@@ -55,12 +56,10 @@ const App = () => {
             .update(person.id, updatedPerson)
             .then((returnedPerson) => {
               setPersons(persons.filter((p) => p.id !== person.id).concat(returnedPerson))
-
               setErrorMessage({
                 text: `Edited ${returnedPerson.name}`,
                 type: "success",
               })
-              
               setTimeout(() => {
                 setErrorMessage(null)
               }, 3000)
@@ -84,16 +83,13 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
-
           setErrorMessage({
             text: `New ${returnedPerson.name}`,
             type: "success",
           })
-          
           setTimeout(() => {
             setErrorMessage(null)
           }, 3000)
-
         })
         .catch(error => {
           setErrorMessage({
