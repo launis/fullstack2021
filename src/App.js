@@ -6,7 +6,6 @@ import PersonForm from "./Components/PersonForm"
 import Filter from "./Components/Filter"
 import Persons from "./Components/Persons"
 import Notification from "./Components/ErrorMessage"
-import Errors from "./Components/ErrorMessage"
 import personService from "./Services/PersonsServices"
 
 // app delete
