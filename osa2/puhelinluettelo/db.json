@@ -1,11 +1,6 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
       "name": "equet",
       "number": "000",
       "id": 6
@@ -21,11 +16,6 @@
       "id": 13
     },
     {
-      "name": "asdfafa",
-      "number": "erggre",
-      "id": 17
-    },
-    {
       "name": "sasa",
       "number": "332",
       "id": 18
@@ -34,6 +24,16 @@
       "name": "Xcc",
       "number": "sds",
       "id": 19
+    },
+    {
+      "name": "as",
+      "number": "das",
+      "id": 20
+    },
+    {
+      "name": "asd",
+      "number": "sad",
+      "id": 21
     }
   ]
 }
