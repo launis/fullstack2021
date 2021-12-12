@@ -8,7 +8,6 @@ import Persons from "./Components/Persons"
 import Notification from "./Components/ErrorMessage"
 import personService from "./Services/PersonsServices"
 
-
 const App = () => {
   const [persons, setPersons] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
@@ -32,12 +31,31 @@ const App = () => {
   const handleNumberChange = (event) => {setNewNumber(event.target.value)}
 
   const delPerson = ({ person }) => {
-    if (window.confirm(`Are you sure you want to delete ${person.name}?`)) {
+    if (window.confirm(`Are you sure you want to delete ${person.name}?`)) 
+    { const del_name = person.name
       personService
         .del(person.id)
         .then(returnedPerson => {
           setPersons(persons.filter((p) => p.id !== person.id))
-        })}
+
+          setErrorMessage({
+            text: `Delete ${del_name}`,
+            type: "success",
+          })
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 3000)
+        })
+        .catch(error => {
+          setErrorMessage({
+            text: error,
+            type: "error"
+          })
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 3000)
+        })
+    }
   }
 
   const addPerson = event => {
@@ -98,8 +116,8 @@ const App = () => {
           setTimeout(() => {
             setErrorMessage(null)
           }, 3000)
-
-        })}
+        })
+      }
   setNewName('')
     setNewNumber('')
   }
