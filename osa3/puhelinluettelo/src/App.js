@@ -9,7 +9,7 @@ import Notification from "./Components/ErrorMessage"
 import Errors from "./Components/ErrorMessage"
 import personService from "./Services/PersonsServices"
 
-// app
+// app delete
 const App = () => {
   const [persons, setPersons] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
