@@ -48,7 +48,7 @@ const App = () => {
         })
         .catch(error => {
           setErrorMessage({
-            text: error,
+            text: error.response.data.error,
             type: "error"
           })
           setTimeout(() => {
@@ -84,7 +84,7 @@ const App = () => {
             .catch(error => {
               setPersons(persons.filter(p => p.id !== person.id))
               setErrorMessage({
-                text: error,
+                text: error.response.data.error,
                 type: "error"
               })
               
@@ -109,8 +109,8 @@ const App = () => {
         })
         .catch(error => {
           setErrorMessage({
-            text: error,
-            type: "error"
+            text: error.response.data.error,
+            type: "error",
           })
           setTimeout(() => {
             setErrorMessage(null)
