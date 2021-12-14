@@ -34,7 +34,6 @@ const App = () => {
   const delPerson = ({ person }) => {
     if (window.confirm(`Are you sure you want to delete ${person.name}?`)) 
     { const del_name = person.name
-      console.log('person.id', person.id)
       personService
         .del(person.id)
         .then(returnedPerson => {
@@ -63,7 +62,6 @@ const App = () => {
     event.preventDefault()
 
     const person = persons.find((person) => person.name === newName)
-    console.log('person', person, newName)
     const personObject = {name: newName, number: newNumber}
     if (person) 
     {

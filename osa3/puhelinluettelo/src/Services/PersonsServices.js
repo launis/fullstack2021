@@ -12,10 +12,7 @@ const create = newObject => {
 }
 
 const del = id => {
-  console.log('id ',id)
-  console.log(`${baseUrl}/${id}`)
   const request = axios.delete(`${baseUrl}/${id}`)
-  console.log('request',request)
   return request.then(response => response.data)
 
 }
