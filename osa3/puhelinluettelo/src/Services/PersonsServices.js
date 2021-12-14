@@ -1,5 +1,6 @@
 import axios from 'axios'
-const baseUrl = 'https://serene-headland-61972.herokuapp.com/api/persons'
+const baseUrl = 'http://localhost:3001/api/persons'
+
 const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
@@ -11,7 +12,10 @@ const create = newObject => {
 }
 
 const del = id => {
+  console.log('id ',id)
+  console.log(`${baseUrl}/${id}`)
   const request = axios.delete(`${baseUrl}/${id}`)
+  console.log('request',request)
   return request.then(response => response.data)
 
 }

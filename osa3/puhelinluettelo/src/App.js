@@ -12,7 +12,7 @@ const App = () => {
   const [persons, setPersons] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
 
-  
+
   useEffect(() => {
     personService
       .getAll()
@@ -20,6 +20,7 @@ const App = () => {
         setPersons(persons)
       })
   }, [])
+
 
   const [newSearch, setNewSearch] = useState("")
   const [newName, setNewName] = useState('')
@@ -33,11 +34,11 @@ const App = () => {
   const delPerson = ({ person }) => {
     if (window.confirm(`Are you sure you want to delete ${person.name}?`)) 
     { const del_name = person.name
+      console.log('person.id', person.id)
       personService
         .del(person.id)
         .then(returnedPerson => {
           setPersons(persons.filter((p) => p.id !== person.id))
-
           setErrorMessage({
             text: `Delete ${del_name}`,
             type: "success",
@@ -118,7 +119,7 @@ const App = () => {
           }, 3000)
         })
       }
-  setNewName('')
+    setNewName('')
     setNewNumber('')
   }
 
