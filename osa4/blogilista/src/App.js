@@ -4,7 +4,7 @@ import config from './utils/config.js'
 import logger from './utils/logger.js'
 import middleware from './utils/middleware.js'
 import mongoose from 'mongoose'
-import blogRouter from  './controllers/blog.js'
+import router from  './controllers/blog.js'
 
 const app = express()
 
@@ -23,7 +23,7 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
   })
 
 app.use(middleware.requestLogger)
-app.use('/api/blogs', blogRouter)
+app.use('/api/blogs', router)
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 

@@ -1,20 +1,26 @@
 import express from 'express'
 import Blog from '../models/blog.js'
 
-const blogRouter = express.Router()
+const router = express.Router()
 
 
-blogRouter.get('/info', (request, response) => {
-  response.send(`Blogs has information<br><br> ${Date()}`)
+
+
+router.get('/info', (request, response, next) => {
+  Blog.find({})
+  .then(blogs => {
+    response.send(`Amount of blogs: ${blogs.length}<br><br>${Date()}`)
   })
+  .catch(error => next(error))
+})
 
-blogRouter.get('/', (request, response) => {
+router.get('/', (request, response) => {
   Blog.find({}).then(blogs => {
     response.json(blogs.map(blog => blog.toJSON()))
   })
 })
 
-blogRouter.get('/:id', (request, response, next) => {
+router.get('/:id', (request, response, next) => {
   Blog.findById(request.params.id)
     .then(blog => {
       if (blog) {
@@ -26,7 +32,7 @@ blogRouter.get('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-blogRouter.post('/', (request, response, next) => {
+router.post('/', (request, response, next) => {
   const body = request.body
 
   const blog = new Blog({
@@ -44,7 +50,7 @@ blogRouter.post('/', (request, response, next) => {
     .catch(error => next(error))
 })
 
-blogRouter.delete('/:id', (request, response, next) => {
+router.delete('/:id', (request, response, next) => {
   Blog.findByIdAndRemove(request.params.id)
     .then(() => {
       response.status(204).end()
@@ -52,7 +58,7 @@ blogRouter.delete('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-blogRouter.put('/:id', (request, response, next) => {
+router.put('/:id', (request, response, next) => {
   const body = request.body
 
   const blog = {
@@ -69,4 +75,4 @@ blogRouter.put('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-export default blogRouter
+export default router
