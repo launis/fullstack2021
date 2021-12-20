@@ -41,9 +41,7 @@ describe('add', () => {
         const blogs = await helper.blogsInDb()
         expect(blogs).toHaveLength(initiallength + 1)
     })
-})
 
-describe('add', () => {
     test('add one blog w/o likes', async () => {
         const newBlog = {
             title: 'ABCf kirja',
@@ -57,10 +55,9 @@ describe('add', () => {
         expect(blogs[initiallength].likes).toBeDefined()
         expect(blogs[initiallength].likes).toBe(0)
     })      
-})
 
-describe('add', () => {
-    test('add one blog w/o likes', async () => {
+
+    test('add one blog with error 400', async () => {
         const newBlog = {
             url: "www.12feef3.com",
         }
