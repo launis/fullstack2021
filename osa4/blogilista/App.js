@@ -1,4 +1,5 @@
 import express from 'express'
+import 'express-async-errors'
 import cors from 'cors'
 import config from './utils/config.js'
 import logger from './utils/logger.js'
