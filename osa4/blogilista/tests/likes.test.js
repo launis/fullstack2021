@@ -3,12 +3,10 @@ import helper from './test_helper'
 
 const listWithOneBlog = [
     {
-        _id: '5a422aa71b54a676234d17f8',
         title: 'Go To Statement Considered Harmful',
         author: 'Edsger W. Dijkstra',
         url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
         likes: 5,
-        __v: 0
     }
 ]
 
@@ -28,8 +26,6 @@ describe('totalLikes multiple blogs', () => {
 describe('favorite blog', () => {
     test('Most favorite blog', () => {
         expect(listHelper.favoriteBlog(helper.initialBlogs)).toEqual({
-            '__v': 0,
-            '_id': '5a422b3a1b54a676234d17f9',
             'author': 'Edsger W. Dijkstra',
             'likes': 12,
             'title': 'Canonical string reduction',

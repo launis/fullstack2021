@@ -1,11 +1,16 @@
 import express from 'express'
-import 'express-async-errors'
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+const expressasyncerrors = require('express-async-errors')
+
 import cors from 'cors'
 import config from './utils/config.js'
 import logger from './utils/logger.js'
 import middleware from './utils/middleware.js'
 import mongoose from 'mongoose'
-import router from  './controllers/blog.js'
+import blogsRouter from  './controllers/blog.js'
+import usersRouter from './controllers/users.js'
+import loginRouter from './controllers/login.js'
 
 const app = express()
 
@@ -23,8 +28,18 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
         logger.error('error connection to MongoDB:', error.message)
     })
 
-app.use(middleware.requestLogger)
-app.use('/api/blogs', router)
+
+
+// app.use(tokenExtractor);
+app.use(middleware.requestLogger);
+app.use(middleware.errorHandler);
+// app.use(userExtractor);
+
+app.use('/api/login', middleware.tokenExtractor, loginRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/blogs', middleware.tokenExtractor, middleware.userExtractor, blogsRouter); // chaining the extractors
+
+
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 
