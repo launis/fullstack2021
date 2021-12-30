@@ -57,9 +57,6 @@ router.post('/', async (request, response, next) => {
         await User.findByIdAndUpdate(request.user,
             { '$push': {'blogs': savedBlog._id } },
             { 'new': true, 'upsert': true },
-            function (error) {
-                if (error) throw error
-            }
         )
         response.json(savedBlog.toJSON())
     } catch (exception) {
