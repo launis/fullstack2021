@@ -96,6 +96,7 @@ const App = () => {
     }
     else
     {
+      console.log('else', personObject)
       personService
         .create(personObject)
         .then(returnedPerson => {
