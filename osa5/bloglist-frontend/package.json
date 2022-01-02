@@ -4,8 +4,6 @@
   "private": true,
   "proxy": "http://localhost:3003",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.24.0",
     "prop-types": "^15.8.0",
@@ -40,6 +38,8 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
     "cross-env": "^7.0.3",
     "eslint-plugin-jest": "^25.3.4",
     "jest": "^27.4.5"
