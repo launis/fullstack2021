@@ -21,24 +21,23 @@ logger.info('connecting to', config.MONGODB_URI)
 
 
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        logger.info('connected to MongoDB')
-    })
-    .catch((error) => {
-        logger.error('error connection to MongoDB:', error.message)
-    })
+  .then(() => {
+    logger.info('connected to MongoDB')
+  })
+  .catch((error) => {
+    logger.error('error connection to MongoDB:', error.message)
+  })
 
 
 
 // app.use(tokenExtractor);
-app.use(middleware.requestLogger);
-app.use(middleware.errorHandler);
+app.use(middleware.requestLogger)
+app.use(middleware.errorHandler)
 // app.use(userExtractor);
 
-app.use('/api/login', middleware.tokenExtractor, loginRouter);
-app.use('/api/users', usersRouter);
-app.use('/api/blogs', middleware.tokenExtractor, middleware.userExtractor, blogsRouter); // chaining the extractors
-
+app.use('/api/login', middleware.tokenExtractor, loginRouter)
+app.use('/api/users', usersRouter)
+app.use('/api/blogs', middleware.tokenExtractor, middleware.userExtractor, blogsRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

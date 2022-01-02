@@ -2,8 +2,8 @@ import listHelper from '../utils/list_helper'
 
 
 test('dummy returns one', () => {
-    const blogs = []
+  const blogs = []
 
-    const result = listHelper.dummy(blogs)
-    expect(result).toBe(1)
+  const result = listHelper.dummy(blogs)
+  expect(result).toBe(1)
 })

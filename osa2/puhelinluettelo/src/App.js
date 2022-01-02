@@ -62,7 +62,6 @@ const App = () => {
     event.preventDefault()
 
     const person = persons.find((person) => person.name === newName)
-    console.log('person', person, newName)
     const personObject = {name: newName, number: newNumber}
     if (person) 
     {
@@ -96,7 +95,6 @@ const App = () => {
     }
     else
     {
-      console.log('else', personObject)
       personService
         .create(personObject)
         .then(returnedPerson => {
