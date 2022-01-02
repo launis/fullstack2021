@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import LogoutForm from './components/LogoutForm'
@@ -6,6 +6,7 @@ import ShowBlogsForm from './components/ShowBlogsForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Togglable from './components/Togglable'
+import PropTypes from 'prop-types'
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
@@ -30,15 +31,15 @@ const App = () => {
 
   const NewLogin = async (credentials) => {
     try {
-      const user = await loginService.login({credentials})
+      const user = await loginService.login({ credentials })
       window.localStorage
         .setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)}
     catch (exception) {
-      setErrorMessage({ 
+      setErrorMessage({
         text: `${exception}`,
-        type: 'error'})
+        type: 'error' })
       setTimeout(() => {
         setErrorMessage(null)}, 50000)}
   }
@@ -50,13 +51,10 @@ const App = () => {
     catch (exception) {
       setErrorMessage({
         text: `${exception}`,
-        type: 'error'})
+        type: 'error' })
       setTimeout(() => {
         setErrorMessage(null)}, 50000)}
   }
-
-
-
 
   const logoutForm = () => (
     <Togglable buttonLabel='logout'>
@@ -71,7 +69,7 @@ const App = () => {
   )
 
 
-  const showBlogsForm = () => ( 
+  const showBlogsForm = () => (
     <ShowBlogsForm
       user={user}
     />
@@ -92,4 +90,9 @@ const App = () => {
     </>
   )
 }
+
+Togglable.propTypes = {
+  buttonLabel: PropTypes.string.isRequired
+}
+
 export default App

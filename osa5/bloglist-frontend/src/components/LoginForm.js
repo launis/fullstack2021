@@ -1,19 +1,19 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 
-const LoginForm = ({NewLogin}) => {
-  const [username, setUsername] = useState('') 
+const LoginForm = ({ NewLogin }) => {
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    NewLogin({username, password})
+    NewLogin({ username, password })
     setUsername('')
     setPassword('')
   }
 
   return (
     <div>
-      <h2>Login</h2>  
+      <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div>
                 username

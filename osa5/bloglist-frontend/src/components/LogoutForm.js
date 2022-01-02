@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LogoutForm = ({NewLogout}) => {
+const LogoutForm = ({ NewLogout }) => {
 
   const handleLogout = async (event) => {
     event.preventDefault()
