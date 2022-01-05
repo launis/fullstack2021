@@ -11,6 +11,8 @@ import mongoose from 'mongoose'
 import blogsRouter from  './controllers/blog.js'
 import usersRouter from './controllers/users.js'
 import loginRouter from './controllers/login.js'
+import testingRouter from './controllers/testing.js'
+
 
 const app = express()
 
@@ -28,8 +30,6 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
     logger.error('error connection to MongoDB:', error.message)
   })
 
-
-
 // app.use(tokenExtractor);
 app.use(middleware.requestLogger)
 app.use(middleware.errorHandler)
@@ -38,6 +38,10 @@ app.use(middleware.errorHandler)
 app.use('/api/login', middleware.tokenExtractor, loginRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/blogs', middleware.tokenExtractor, middleware.userExtractor, blogsRouter)
+
+if (process.env.NODE_ENV === 'test') {
+  app.use('/api/testing', testingRouter)
+}
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

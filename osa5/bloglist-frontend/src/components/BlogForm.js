@@ -26,6 +26,7 @@ const BlogForm = ({ addBlog }) => {
         type="text"
         value={title}
         name='Title'
+        id="Title"
         onChange={({ target }) => newTitle(target.value)}
       />
             author
@@ -33,6 +34,7 @@ const BlogForm = ({ addBlog }) => {
         type="text"
         value={author}
         name='Author'
+        id="Author"
         onChange={({ target }) => newAuthor(target.value)}
       />
             url
@@ -40,6 +42,7 @@ const BlogForm = ({ addBlog }) => {
         type="text"
         value={url}
         name='Url'
+        id="Url"
         onChange={({ target }) => newUrl(target.value)}
       />
             likes
@@ -47,9 +50,10 @@ const BlogForm = ({ addBlog }) => {
         type="text"
         value={likes}
         name='Likes'
+        id="Likes"
         onChange={({ target }) => newLikes(target.value)}
       />
-      <button type="submit">save</button>
+      <button id='Save' type="submit">save</button>
     </form>
   )
 }

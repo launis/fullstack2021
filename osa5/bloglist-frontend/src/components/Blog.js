@@ -24,11 +24,12 @@ const Blog = ({ blog, user, deleteBlog }) => {
     }, 5000)
   }, [errorMessage])
 
+
   const addLikes = async () => {
     try {
       blog.likes = blog.likes + 1
-      blogService.update(blog.id, { likes: blog.likes })
       setValues({ ...values, likes: blog.likes })
+      await blogService.update(blog.id, { likes: blog.likes })
     }
     catch (exception) {
       setErrorMessage({
@@ -49,11 +50,14 @@ const Blog = ({ blog, user, deleteBlog }) => {
       <p>{blog.title}</p>
       <p>{blog.author}</p>
       <p>{blog.url}</p>
-      <p>{blog.likes}
-        <button onClick={addLikes}>
+      <div className="like">
+        <p>{blog.likes}
+          <button id="like-button"
+            onClick={addLikes}>
                 like
-        </button>
-      </p>
+          </button>
+        </p>
+      </div>
       <p>{blog.user.name}</p>
       {sameuser &&
                 <button onClick={handleDelete}>
@@ -63,17 +67,25 @@ const Blog = ({ blog, user, deleteBlog }) => {
   )
 
   return (
-    <div style={blogStyle}>
+    <div
+      className="blog"
+      style={blogStyle}>
       <Notification message={errorMessage} />
-      {blog.title}
-      <button onClick={() => setView(!view)}>
+      <div className="title">
+        {blog.title}
+      </div>
+      <button id="view-button"
+        onClick={() => setView(!view)} className='rows'>
         {view
           ? 'hide'
           : 'view'}
       </button>
-      <div style={{ display: view
-        ? ''
-        : 'none' }}>
+
+      <div
+        className="content"
+        style={{ display: view
+          ? ''
+          : 'none' }}>
         {blogForm()}
       </div>
     </div>
