@@ -37,7 +37,6 @@ const App = () => {
         .del(person.id)
         .then(returnedPerson => {
           setPersons(persons.filter((p) => p.id !== person.id))
-
           setErrorMessage({
             text: `Delete ${del_name}`,
             type: "success",
@@ -47,19 +46,22 @@ const App = () => {
           }, 3000)
         })
         .catch(error => {
+          console.log(error.response.data)
           setErrorMessage({
-            text: error,
+            text: error.response.data,
             type: "error"
           })
           setTimeout(() => {
             setErrorMessage(null)
           }, 3000)
-        })
+      })
     }
   }
 
-  const addPerson = event => {
+  const addPerson = (event) => {
+
     event.preventDefault()
+
 
     const person = persons.find((person) => person.name === newName)
     const personObject = {name: newName, number: newNumber}
@@ -67,59 +69,51 @@ const App = () => {
     {
       if (window.confirm(`${newName} is already added to phonebook, replase with new number?`)) 
         {
-          const updatedPerson = { ...person, number: newNumber }
-          personService
-            .update(person.id, updatedPerson)
-            .then((returnedPerson) => {
-              setPersons(persons.filter((p) => p.id !== person.id).concat(returnedPerson))
+        const updatedPerson = { ...person, number: newNumber }
+        personService
+          .update(person.id, updatedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person =>
+              person.id === returnedPerson.id ? returnedPerson : person))
               setErrorMessage({
-                text: `Edited ${returnedPerson.name}`,
-                type: "success",
-              })
-              setTimeout(() => {
-                setErrorMessage(null)
-              }, 3000)
-
+              text: `Edited ${returnedPerson.name}`,
+              type: "success",
             })
-            .catch(error => {
-              setPersons(persons.filter(p => p.id !== person.id))
-              setErrorMessage({
-                text: error,
-                type: "error"
-              })
-              
-              setTimeout(() => {
-                setErrorMessage(null)
-              }, 3000)
-                                                                                                                                                                                                                                                                                                           })}
-    }
-    else
-    {
+          })
+          .catch(error => {
+            setErrorMessage({
+              text: error.response.data.error,
+              type: "error"
+            })
+          })
+
+      }
+    } 
+    else {
       personService
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
           setErrorMessage({
-            text: `New ${returnedPerson.name}`,
+            text: `Added ${returnedPerson.name}`,
             type: "success",
           })
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 3000)
         })
         .catch(error => {
           setErrorMessage({
-            text: error,
+            text: error.response.data.error,
             type: "error"
           })
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 3000)
         })
-      }
-  setNewName('')
+
+    }
+    setTimeout(() => {
+    setErrorMessage(null)
+    }, 3000)
+    setNewName('')
     setNewNumber('')
   }
+
 
 return (
     <>
