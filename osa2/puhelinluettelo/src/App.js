@@ -62,6 +62,7 @@ const App = () => {
 
     event.preventDefault()
 
+
     const person = persons.find((person) => person.name === newName)
     const personObject = {name: newName, number: newNumber}
     if (person) 
@@ -85,6 +86,7 @@ const App = () => {
               type: "error"
             })
           })
+
       }
     } 
     else {
@@ -103,8 +105,11 @@ const App = () => {
             type: "error"
           })
         })
+
     }
-    setTimeout(() => {setErrorMessage(null)}, 3000)
+    setTimeout(() => {
+    setErrorMessage(null)
+    }, 3000)
     setNewName('')
     setNewNumber('')
   }
@@ -134,6 +139,8 @@ return (
         newSearch={newSearch}
         delPerson={delPerson}
       />
+
+
     </>
   )
 }
