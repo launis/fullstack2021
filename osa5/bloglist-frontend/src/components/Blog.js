@@ -24,12 +24,13 @@ const Blog = ({ blog, user, deleteBlog }) => {
     }, 5000)
   }, [errorMessage])
 
-
-  const addLikes = async () => {
+  const addLikes = () => {
     try {
       blog.likes = blog.likes + 1
-      setValues({ ...values, likes: blog.likes })
-      await blogService.update(blog.id, { likes: blog.likes })
+      useEffect(() => {
+        blogService.update(blog.id, { likes: blog.likes })
+          .then(setValues({ ...values, likes: blog.likes }))
+      }, [])
     }
     catch (exception) {
       setErrorMessage({

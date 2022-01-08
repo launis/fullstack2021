@@ -18,6 +18,7 @@ const user = {
   username: 'superuser',
   name: 'root' }
 
+
 describe('Blog component rendering', () => {
 
   test('blog by default should render title and author only', () => {
@@ -25,10 +26,9 @@ describe('Blog component rendering', () => {
     const deleteBlog = jest.fn()
     const component = render(
       <Blog
-        key={blog.id}
         blog={blog}
         user={user}
-        deleteBlog={jest.fn()}
+        deleteBlog={deleteBlog}
       />
     )
 
@@ -37,49 +37,32 @@ describe('Blog component rendering', () => {
   })
 
   test('clicking the view button displays url and number of likes', () => {
-    const deleteBlog = jest.fn()
     const component = render(
       <Blog
-        key={blog.id}
         blog={blog}
         user={user}
-        deleteBlog={jest.fn()}
       />
     )
 
     const button = component.getByText('view')
     fireEvent.click(button)
 
-    expect(component.container).toHaveTextContent(
-      'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html'
-    )
-
-    expect(component.container).toHaveTextContent(
-      '7'
-    )
+    expect(component.container).toHaveTextContent('http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html')
+    expect(component.container).toHaveTextContent('7')
   })
 
-  test('clicking like button adds number of likes', async() => {
+  test('clicking like button adds number of likes', () => {
 
-
-    const deleteBlog = jest.fn()
     const component = render(
       <Blog
-        key={blog.id}
         blog={blog}
         user={user}
-        deleteBlog={jest.fn()}
       />
     )
 
     const button = component.getByText('like')
-    try {
-      fireEvent.click(button)
-      expect(component.container).toHaveTextContent('8')
-    }
-    catch (e) {
-      console.log(e)}
-
-
+    fireEvent.click(button)
+    fireEvent.click(button)
+    expect(component.container).toHaveTextContent('9')
   })
 })
