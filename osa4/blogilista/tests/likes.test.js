@@ -10,15 +10,16 @@ const listWithOneBlog = [
   }
 ]
 
-describe('totallikes one blog', () => {
+describe('totallikes', () => {
+  test('of empty list is zero', () => {
+    const result = listHelper.totalLikes([])
+    expect(result).toBe(0)
+  })
   test('when list has only one blog equals the likes of that', () => {
     const result = listHelper.totalLikes(listWithOneBlog)
     expect(result).toBe(5)
   })
-})
-
-describe('totalLikes multiple blogs', () => {
-  test('Most likes from all of the blogs', () => {
+  test('totalLikes multiple blogs calculated right', () => {
     expect(listHelper.totalLikes(helper.initialBlogs)).toBe(36)
   })
 })
@@ -34,16 +35,14 @@ describe('favorite blog', () => {
   })
 })
 
-describe('totalLikes of blogger from multiple blogs', () => {
-  test('Most likes from all of the blogs', () => {
+describe('Most likes abd bloggers from multiple blogs', () => {
+  test('Most blogs', () => {
     expect(listHelper.mostBlogs(helper.initialBlogs)).toEqual({
       'author': 'Robert C. Martin',
       'blogs': 3 })
   })  
-})
 
-describe('mostLikes of allBlogs', () => {
-  test('Most likes from all of the blogs', () => {
+  test('Most likes', () => {
     expect(listHelper.mostLikes(helper.initialBlogs)).toEqual({
       'author': 'Edsger W. Dijkstra',
       'likes': 17 })
