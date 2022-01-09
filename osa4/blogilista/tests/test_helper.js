@@ -4,7 +4,6 @@ import User from '../models/user.js'
 
 const initialBlogs = [
   {
-
     title: 'React patterns',
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',

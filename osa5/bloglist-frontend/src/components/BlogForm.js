@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+
 
 const BlogForm = ({ addBlog }) => {
   const [title, newTitle] = useState('')
@@ -58,3 +60,12 @@ const BlogForm = ({ addBlog }) => {
   )
 }
 export default BlogForm
+
+BlogForm.propTypes = {
+  blog: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    likes: PropTypes.number,
+  }),
+}

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, } from 'react'
-import blogService from '../services/blogs'
 import Notification from '../components/Notification'
+import PropTypes from 'prop-types'
 
-const Blog = ({ blog, user, deleteBlog }) => {
+
+const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -13,10 +14,7 @@ const Blog = ({ blog, user, deleteBlog }) => {
   const [view, setView] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const sameuser = user.username === blog.user.username
-
-  const [values, setValues] = useState({
-    likes: 0
-  })
+  const [values, setValues] = useState({})
 
   useEffect(() => {
     setTimeout(() => {
@@ -24,20 +22,10 @@ const Blog = ({ blog, user, deleteBlog }) => {
     }, 5000)
   }, [errorMessage])
 
-  const addLikes = () => {
-    try {
-      blog.likes = blog.likes + 1
-      useEffect(() => {
-        blogService.update(blog.id, { likes: blog.likes })
-          .then(setValues({ ...values, likes: blog.likes }))
-      }, [])
-    }
-    catch (exception) {
-      setErrorMessage({
-        text: `${exception}`,
-        type: 'error' })
-      setTimeout(() => {
-        setErrorMessage(null)}, 50000)}
+  const handleLike = async () => {
+    blog.likes = blog.likes + 1
+    await updateBlog(blog.id, { likes: blog.likes })
+    setValues({ ...values, likes: blog.likes })
   }
 
   const handleDelete = () => {
@@ -53,9 +41,8 @@ const Blog = ({ blog, user, deleteBlog }) => {
       <p>{blog.url}</p>
       <div className="like">
         <p>{blog.likes}
-          <button id="like-button"
-            onClick={addLikes}>
-                like
+          <button id="like-button" onClick={handleLike}>
+            like
           </button>
         </p>
       </div>
@@ -94,3 +81,17 @@ const Blog = ({ blog, user, deleteBlog }) => {
 }
 
 export default Blog
+
+Blog.propTypes = {
+  blog: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    likes: PropTypes.number,
+  }),
+  user: PropTypes.shape({
+    token: PropTypes.string,
+    username: PropTypes.string,
+    name: PropTypes.string,
+  }),
+}

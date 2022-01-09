@@ -68,7 +68,6 @@ const App = () => {
     </Togglable>
   )
 
-
   const showBlogsForm = () => (
     <ShowBlogsForm
       user={user}

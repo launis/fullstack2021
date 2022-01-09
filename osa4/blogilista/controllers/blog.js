@@ -44,7 +44,7 @@ router.post('/', async (request, response, next) => {
   try {
     const body = request.body
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
-
+    
     const blog = new Blog({
       title: body.title,
       author: body.author,
@@ -89,7 +89,7 @@ router.delete('/:id', async (request, response, next) => {
 router.put('/:id', async (request, response, next) => {
   try {
     const body = request.body
-    const decodedToken = await jwt.verify(request.token, process.env.SECRET)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
     if (!request.token || !decodedToken || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
     }

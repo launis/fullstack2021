@@ -144,6 +144,7 @@ describe('add', () => {
   })
 })
 
-afterAll(() => {
+afterAll( async () => {
+  await Blog.deleteMany({})
   mongoose.connection.close()
 })
