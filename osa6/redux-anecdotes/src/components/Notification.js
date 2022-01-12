@@ -1,16 +1,35 @@
-
+import { useSelector } from 'react-redux'
 import React from 'react'
 
-const Notification = () => {
+const Data = ({ data }) => {
+
   const style = {
-    border: 'solid',
+    border: '2px solid red',
     padding: 10,
-    borderWidth: 1
+    marginBottom: '10px',
   }
+
   return (
     <div style={style}>
-      render here notification...
+      <div>
+        {data.text} {data.type}
+      </div>
     </div>
+  )
+}
+
+const Notification = () => {
+
+  const notifications = useSelector(state => state.notification)
+  return(
+    <ul>
+      {notifications.map(notification =>
+        <Data
+          key={notification.id}
+          data={notification}
+        />
+      )}
+    </ul>
   )
 }
 
