@@ -1,5 +1,3 @@
-import { getId } from '../reducers/store'
-
 let timeId = 0
 
 export const setNotification = (content, time) => {
@@ -16,8 +14,7 @@ export const setNotification = (content, time) => {
       type: 'NEW_NOTIFICATION',
       data: {
         text: content.text,
-        type: content.type,
-        id: getId()
+        type: content.type
       },
     })
   }
