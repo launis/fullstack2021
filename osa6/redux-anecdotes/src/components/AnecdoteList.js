@@ -8,7 +8,7 @@ const Anecdote = ({ anecdote, handleClick }) => {
   const dispatch = useDispatch()
 
   const vote = () => {
-    dispatch(voteAnecdote(anecdote.id))
+    dispatch(voteAnecdote(anecdote))
     const data = { text: 'vote', type:'NEW' }
     dispatch(createNotification(data))
     setTimeout(() => {
@@ -33,7 +33,6 @@ const AnecdoteList = () => {
   const anecdotes = useSelector(state => state.anecdote
     .filter(anecdote => anecdote.content.toLowerCase().includes(filter.content.toLowerCase()))
     .sort((a,b) => b.votes - a.votes))
-
   return(
     <ul>
       {anecdotes.map(anecdote =>
