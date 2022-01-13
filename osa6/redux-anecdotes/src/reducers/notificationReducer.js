@@ -24,9 +24,10 @@ export const setNotification = (content, time) => {
 }
 
 const reducer = (state = [], action) => {
+  console.log('state', state)
   switch(action.type) {
   case 'NEW_NOTIFICATION':
-    return [...state, action.data]
+    return action.data
   case 'HIDE_NOTIFICATION':
     return []
   default:
