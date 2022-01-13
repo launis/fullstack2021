@@ -1,26 +1,17 @@
-export const setFilter = (content) => {
+export const setFilter = (data) => {
   return {
     type: 'SET_FILTER',
-    content
+    data
   }
 }
 
-const initialState = { content: '' }
-
-const reducer = (state = initialState, action) => {
-
-  switch(action.type){
-  case 'SET_FILTER': {
-    return {
-      ...state,
-      content: action.content
-    }
-  }
+const reducer = (state = '', action) => {
+  switch (action.type) {
+  case 'SET_FILTER':
+    return action.data
   default:
     return state
   }
-
 }
-
 
 export default reducer

@@ -32,9 +32,6 @@ export const initializeAnecdotes = () => {
 }
 
 const reducer = (state = [], action) => {
-  console.log('anecdote state now: ', state)
-  console.log('anecdote action', action)
-
   switch(action.type) {
   case 'NEW_ANECDOTE':
     return [...state, action.data]
@@ -43,9 +40,7 @@ const reducer = (state = [], action) => {
       anecdote.id === action.data.id
         ? action.data
         : anecdote
-    )
-  }
-
+    )}
   case 'INIT_ANECDOTE':
     return action.data
   default:

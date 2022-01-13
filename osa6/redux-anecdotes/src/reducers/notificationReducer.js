@@ -8,16 +8,10 @@ export const setNotification = (content, time) => {
     timeId = setTimeout(
       () =>
         dispatch({
-          type: 'HIDE_NOTIFICATION',
-          data: {
-            text: null,
-            type: null,
-            id: null
-          },
+          type: 'HIDE_NOTIFICATION'
         }),
       time * 1000
     )
-
     dispatch({
       type: 'NEW_NOTIFICATION',
       data: {
@@ -29,10 +23,7 @@ export const setNotification = (content, time) => {
   }
 }
 
-
 const reducer = (state = [], action) => {
-  console.log('notification state now: ', state)
-  console.log('notification action', action)
   switch(action.type) {
   case 'NEW_NOTIFICATION':
     return [...state, action.data]
