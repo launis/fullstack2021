@@ -37,3 +37,5 @@ const AnecdoteList = () => {
     </ul>
   )
 }
+
+export default AnecdoteList
