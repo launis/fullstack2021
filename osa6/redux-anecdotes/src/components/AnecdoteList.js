@@ -3,19 +3,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
 
 const Anecdote = ({ anecdote, handleClick }) => {
+
   const dispatch = useDispatch()
-
-  const vote = () => {
-    dispatch(voteAnecdote(anecdote))
-  }
-
   return(
     <div onClick={handleClick}>
       <div>
         {anecdote.content}
       </div>
        has {anecdote.votes}
-      <button onClick={vote}>vote</button>
+      <button onClick={() => {dispatch(voteAnecdote(anecdote))}}>vote</button>
     </div>
   )
 }
@@ -37,5 +33,4 @@ const AnecdoteList = () => {
     </ul>
   )
 }
-
 export default AnecdoteList
