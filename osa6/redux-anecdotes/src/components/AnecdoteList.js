@@ -1,15 +1,12 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
-import { setNotification } from '../reducers/notificationReducer'
 
 const Anecdote = ({ anecdote, handleClick }) => {
   const dispatch = useDispatch()
 
   const vote = () => {
     dispatch(voteAnecdote(anecdote))
-    const data = { text: `Voted anecdote ${anecdote.content}`, type:'VOTE' }
-    dispatch(setNotification(data, 3))
   }
 
   return(
@@ -40,5 +37,3 @@ const AnecdoteList = () => {
     </ul>
   )
 }
-
-export default AnecdoteList

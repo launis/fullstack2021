@@ -1,5 +1,6 @@
 /* eslint-disable no-case-declarations */
 import anecdoteService from '../services/anecdotes'
+import { setNotification } from '../reducers/notificationReducer'
 
 export const createAnecdote = (content) => {
   return async dispatch => {
@@ -8,6 +9,8 @@ export const createAnecdote = (content) => {
       type: 'NEW_ANECDOTE',
       data: newAnecdote
     })
+    const data = { text: `Added anecdote ${content}`, type:'ANECDOTE' }
+    dispatch(setNotification(data, 3))
   }
 }
 
@@ -18,6 +21,8 @@ export const voteAnecdote = (anecdote) => {
       type: 'VOTE_ANECDOTE',
       data: updateAnecdote
     })
+    const data = { text: `Voted anecdote ${anecdote.content}`, type:'VOTE' }
+    dispatch(setNotification(data, 3))
   }
 }
 
