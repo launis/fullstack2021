@@ -1,8 +1,9 @@
-/* eslint-disable no-case-declarations */
 import anecdoteService from '../services/anecdotes'
 import { setNotification } from '../reducers/notificationReducer'
+const notfication_wait = 3
 
 export const createAnecdote = (content) => {
+
   return async dispatch => {
     const newAnecdote = await anecdoteService.createNew(content)
     dispatch({
@@ -10,11 +11,12 @@ export const createAnecdote = (content) => {
       data: newAnecdote
     })
     const data = { text: `Added anecdote ${content}`, type:'ANECDOTE' }
-    dispatch(setNotification(data, 3))
+    dispatch(setNotification(data, notfication_wait))
   }
 }
 
 export const voteAnecdote = (anecdote) => {
+
   return async (dispatch) => {
     const updateAnecdote = await anecdoteService.updateAnecdote(anecdote.id, { votes: anecdote.votes + 1 })
     dispatch({
@@ -22,11 +24,12 @@ export const voteAnecdote = (anecdote) => {
       data: updateAnecdote
     })
     const data = { text: `Voted anecdote ${anecdote.content}`, type:'VOTE' }
-    dispatch(setNotification(data, 3))
+    dispatch(setNotification(data, notfication_wait))
   }
 }
 
 export const initializeAnecdotes = () => {
+
   return async dispatch => {
     const anecdotes = await anecdoteService.getAll()
     dispatch({
@@ -37,6 +40,7 @@ export const initializeAnecdotes = () => {
 }
 
 const reducer = (state = [], action) => {
+
   switch(action.type) {
   case 'NEW_ANECDOTE':
     return [...state, action.data]

@@ -1,4 +1,5 @@
 export const setFilter = (data) => {
+
   return {
     type: 'SET_FILTER',
     data
@@ -6,6 +7,7 @@ export const setFilter = (data) => {
 }
 
 const reducer = (state = '', action) => {
+
   switch (action.type) {
   case 'SET_FILTER':
     return action.data

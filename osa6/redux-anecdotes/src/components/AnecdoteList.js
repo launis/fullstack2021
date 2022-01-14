@@ -7,9 +7,7 @@ const Anecdote = ({ anecdote, handleClick }) => {
   const dispatch = useDispatch()
   return(
     <div onClick={handleClick}>
-      <div>
-        {anecdote.content}
-      </div>
+      <div>{anecdote.content}</div>
        has {anecdote.votes}
       <button onClick={() => {dispatch(voteAnecdote(anecdote))}}>vote</button>
     </div>
@@ -27,10 +25,10 @@ const AnecdoteList = () => {
       {anecdotes.map(anecdote =>
         <Anecdote
           key={anecdote.id}
-          anecdote={anecdote}
-        />
+          anecdote={anecdote}/>
       )}
     </ul>
   )
 }
+
 export default AnecdoteList

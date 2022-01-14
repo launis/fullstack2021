@@ -1,6 +1,7 @@
 let timeId = 0
 
 export const setNotification = (content, time) => {
+
   return async (dispatch) => {
     clearTimeout(timeId)
     timeId = setTimeout(
@@ -21,6 +22,7 @@ export const setNotification = (content, time) => {
 }
 
 const reducer = (state = [], action) => {
+
   console.log('state', state)
   switch(action.type) {
   case 'NEW_NOTIFICATION':
