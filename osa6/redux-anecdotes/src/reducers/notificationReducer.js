@@ -1,6 +1,6 @@
 let timeId = 0
 
-export const setNotification = (content, time) => {
+export const setNotification = (notification, time) => {
 
   return async (dispatch) => {
     clearTimeout(timeId)
@@ -14,8 +14,8 @@ export const setNotification = (content, time) => {
     dispatch({
       type: 'NEW_NOTIFICATION',
       data: {
-        text: content.text,
-        type: content.type
+        text: notification.text,
+        type: notification.type
       },
     })
   }

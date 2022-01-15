@@ -5,42 +5,43 @@ const notfication_wait = 3
 export const createAnecdote = (content) => {
 
   return async dispatch => {
-    const newAnecdote = await anecdoteService.createNew(content)
+    const data = await anecdoteService.createNew(content)
     dispatch({
       type: 'NEW_ANECDOTE',
-      data: newAnecdote
+      data
     })
-    const data = { text: `Added anecdote ${content}`, type:'ANECDOTE' }
-    dispatch(setNotification(data, notfication_wait))
+    const notfication = { text: `Added anecdote ${data.content}`, type:'ANECDOTE' }
+    dispatch(setNotification(notfication, notfication_wait))
   }
 }
 
 export const voteAnecdote = (anecdote) => {
 
   return async (dispatch) => {
-    const updateAnecdote = await anecdoteService.updateAnecdote(anecdote.id, { votes: anecdote.votes + 1 })
+    const data = await anecdoteService.updateAnecdote(anecdote.id, { votes: anecdote.votes + 1 })
     dispatch({
       type: 'VOTE_ANECDOTE',
-      data: updateAnecdote
+      data
     })
-    const data = { text: `Voted anecdote ${anecdote.content}`, type:'VOTE' }
-    dispatch(setNotification(data, notfication_wait))
+    const notfication = { text: `Voted anecdote ${data.content}`, type:'VOTE' }
+    dispatch(setNotification(notfication, notfication_wait))
   }
 }
 
 export const initializeAnecdotes = () => {
 
   return async dispatch => {
-    const anecdotes = await anecdoteService.getAll()
+    const data = await anecdoteService.getAll()
     dispatch({
       type: 'INIT_ANECDOTE',
-      data: anecdotes,
+      data
     })
   }
 }
 
 const reducer = (state = [], action) => {
-
+  console.log('action', action)
+  console.log('state', state)
   switch(action.type) {
   case 'NEW_ANECDOTE':
     return [...state, action.data]
