@@ -1,18 +1,30 @@
 import { connect } from 'react-redux'
 import React from 'react'
 
-const Notification = (props) => {
-  console.log('notification',props.notification)
-  const style = {
-    border: '2px solid red',
-    padding: 10,
-    marginBottom: '10px'
+
+const NotificationList = (props) => {
+
+  const Notification = ( { notification } ) => {
+    const style = {
+      border: '2px solid red',
+      padding: 10,
+      marginBottom: '10px'
+    }
+    return(
+      <div style={style}>{notification.text} {notification.type}</div>
+    )
   }
 
-  return(
-    <div style={style}>{props.notification.text} {props.notification.type}</div>
+  return (
+    <div>
+      {props.notification
+        .map((notification) => (
+          <Notification key={notification.id} notification={notification} />
+        ))}
+    </div>
   )
 }
+
 
 const mapStateToProps = (state) => {
 
@@ -24,4 +36,4 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-)(Notification)
+)(NotificationList)

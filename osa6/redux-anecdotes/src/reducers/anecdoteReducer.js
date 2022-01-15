@@ -1,5 +1,6 @@
 import anecdoteService from '../services/anecdotes'
 import { setNotification } from '../reducers/notificationReducer'
+
 const notfication_wait = 3
 
 export const createAnecdote = (content) => {
@@ -40,8 +41,6 @@ export const initializeAnecdotes = () => {
 }
 
 const reducer = (state = [], action) => {
-  console.log('action', action)
-  console.log('state', state)
   switch(action.type) {
   case 'NEW_ANECDOTE':
     return [...state, action.data]
