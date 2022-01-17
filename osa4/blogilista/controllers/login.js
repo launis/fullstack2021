@@ -6,8 +6,6 @@ import logger from '../utils/logger.js'
 
 const router = express.Router()
 
-
-
 router.post('/', async (request, response, next) => {
   try {
     const body = request.body
