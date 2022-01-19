@@ -11,6 +11,8 @@ import {
   useHistory,
 } from "react-router-dom"
 
+import  { useField } from './hooks'
+
 const padding = {
   paddingRight: 5
 }
@@ -56,48 +58,54 @@ const About = () => (
   </div>
 )
 
-const Footer = () => (
-  <div>
-    Anecdote app for <a href='https://courses.helsinki.fi/fi/tkt21009'>Full Stack -websovelluskehitys</a>.
-    See <a href='https://github.com/fullstack-hy/routed-anecdotes/blob/master/src/App.js'>https://github.com/fullstack-hy2019/routed-anecdotes/blob/master/src/App.js</a> for the source code.
-  </div>
-  )
+  const Footer = () => (
+    <div>
+      Anecdote app for <a href='https://courses.helsinki.fi/fi/tkt21009'>Full Stack -websovelluskehitys</a>.
+      See <a href='https://github.com/fullstack-hy/routed-anecdotes/blob/master/src/App.js'>https://github.com/fullstack-hy2019/routed-anecdotes/blob/master/src/App.js</a> for the source code.
+    </div>
+    )
 
-const CreateNew = (props) => {
+  const CreateNew = (props) => {
 
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+    const cleanField = (field) => {
+      return Object.assign({}, ...Object.entries(field).map(([k, v]) => ({[k]: v })).slice(0,3))}
 
+    const content = cleanField(useField('text'))
+    const author = cleanField(useField('text'))
+    const info = cleanField(useField('text'))
 
-  const handleSubmit = (e) => {
+    const handleSubmit = (e) => {
+      e.preventDefault()
+      props.addNew({
+        content: content.value,
+        author: author.value,
+        info: info.value,
+        votes: 0,
+      })
+    }
 
-    e.preventDefault()
-    props.addNew({
-      content,
-      author,
-      info,
-      votes: 0
-    })
-  }
+    const handleClear = (e) => {
+      e.preventDefault()
+      content.onClear()
+      author.onClear()
+      info.onClear()
+    }
 
+    
   return (
     <div>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
-        </div>
-        <div>
-          author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
-        </div>
-        <div>
-          url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
-        </div>
-        <button>create</button>
+        content: 
+        <input  {...content} /> 
+        <br/> 
+        author: 
+        <input {...author} />
+        <br /> 
+        url for more info:
+        <input {...info} />
+        <button>create</button>        
+        <button onClick={handleClear}>clear</button>
       </form>
     </div>
   )
