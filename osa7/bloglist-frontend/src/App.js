@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import LogoutForm from './components/LogoutForm'
@@ -8,16 +9,13 @@ import loginService from './services/login'
 import Togglable from './components/Togglable'
 import PropTypes from 'prop-types'
 
-const App = () => {
-  const [errorMessage, setErrorMessage] = useState(null)
+import { setNotification } from './reducers/notificationReducer'
+const notfication_wait = 3
 
+const App = () => {
   const [user, setUser] = useState(null)
 
-  useEffect(() => {
-    setTimeout(() => {
-      setErrorMessage(null)
-    }, 5000)
-  }, [errorMessage])
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage
@@ -37,23 +35,19 @@ const App = () => {
       blogService.setToken(user.token)
       setUser(user)}
     catch (exception) {
-      setErrorMessage({
-        text: `${exception}`,
-        type: 'error' })
-      setTimeout(() => {
-        setErrorMessage(null)}, 50000)}
+      const notfication = { text: exception, type:'ERROR' }
+      dispatch(setNotification(notfication, notfication_wait))
+    }
   }
 
   const NewLogout = async () => {
     try {
       window.localStorage.removeItem('loggedBlogappUser')
       setUser(null)}
-    catch (exception) {
-      setErrorMessage({
-        text: `${exception}`,
-        type: 'error' })
-      setTimeout(() => {
-        setErrorMessage(null)}, 50000)}
+    catch (exception)  {
+      const notfication = { text: exception, type:'ERROR' }
+      dispatch(setNotification(notfication, notfication_wait))
+    }
   }
 
   const logoutForm = () => (
@@ -77,7 +71,7 @@ const App = () => {
   return (
     <>
       <h1>Blogs</h1>
-      <Notification message={errorMessage} />
+      <Notification />
       {user === null
         ? loginForm()
         :

@@ -1,15 +1,19 @@
-/* eslint-disable linebreak-style */
 import React, { useState, useEffect, useRef  } from 'react'
-import Notification from '../components/Notification'
 import BlogForm from '../components/BlogForm'
 import Blog from '../components/Blog'
 import blogService from '../services/blogs'
 import Togglable from '../components/Togglable'
 
+import { useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
+
+const notfication_wait = 3
+
+
 const ShowBlogsForm = ({ user }) => {
-  const [errorMessage, setErrorMessage] = useState(null)
   const [blogs, setBlogs] = useState([])
   const blogFormRef = useRef()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const AllBlogs = async () => {
@@ -19,37 +23,22 @@ const ShowBlogsForm = ({ user }) => {
     AllBlogs()
   }, [])
 
-  useEffect(() => {
-    setTimeout(() => {
-      setErrorMessage(null)
-    }, 5000)
-  }, [errorMessage])
-
   const addBlog = async (blogObject) => {
+
     try {
       blogFormRef.current.toggleVisibility()
       if (!blogObject.title || !blogObject.author || !blogObject.url) {
-        setErrorMessage({
-          text: 'All fields needed',
-          type: 'error' })
-        setTimeout(() => {
-          setErrorMessage(null)}, 50000)
-        return}
+        dispatch(setNotification({ text: 'All fields needed', type: 'ERROR' }, notfication_wait))
+      }
 
       const newBlog = await blogService.create(blogObject)
       const blogs = await blogService.getAll()
       setBlogs(blogs.sort((a, b) => b.likes - a.likes))
-
-      setErrorMessage({
-        text: `New ${newBlog.title}`,
-        type: 'success' })
+      dispatch(setNotification({ text: `New ${newBlog.title}`, type: 'SUCCESS' }, notfication_wait))
     }
     catch (exception) {
-      setErrorMessage({
-        text: `${exception}`,
-        type: 'error' })
-      setTimeout(() => {
-        setErrorMessage(null)}, 50000)}
+      dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))
+    }
   }
 
   const updateBlog = async (blogId, blogObject) => {
@@ -58,33 +47,22 @@ const ShowBlogsForm = ({ user }) => {
       const updatedBlog = { ...blogObject, blogId }
       setBlogs(
         blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog)))
-
-      setErrorMessage({
-        text: `Updated ${blogId}`,
-        type: 'success' })
+      dispatch(setNotification({ text: `Updated ${blogId}`, type: 'SUCCESS' }, notfication_wait))
     }
     catch (exception) {
-      setErrorMessage({
-        text: `${exception}`,
-        type: 'error' })
-      setTimeout(() => {
-        setErrorMessage(null)}, 50000)}
+      dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))
+    }
   }
 
   const deleteBlog = async (blogId) => {
     try {
       await blogService.del(blogId)
       setBlogs(blogs.filter((b) => b.id !== blogId))
-      setErrorMessage({
-        text: `Deleted ${blogId}`,
-        type: 'success' })
+      dispatch(setNotification({ text: `Deleted ${blogId}`, type: 'SUCCESS' }, notfication_wait))
     }
     catch (exception) {
-      setErrorMessage({
-        text: `${exception}`,
-        type: 'error' })
-      setTimeout(() => {
-        setErrorMessage(null)}, 50000)}
+      dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))
+    }
   }
 
 
@@ -106,7 +84,6 @@ const ShowBlogsForm = ({ user }) => {
 
   return (
     <div>
-      <Notification message={errorMessage} />
       {addForm()}
       <div>
         {blogs.map((blog) => (

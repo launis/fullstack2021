@@ -1,6 +1,11 @@
-import React, { useState, useEffect, } from 'react'
-import Notification from '../components/Notification'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+
+import { useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
+
+const notfication_wait = 3
+
 
 
 const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
@@ -11,26 +16,32 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
+
+  const dispatch = useDispatch()
   const [view, setView] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
   const sameuser = user.username === blog.user.username
   const [values, setValues] = useState({})
 
-  useEffect(() => {
-    setTimeout(() => {
-      setErrorMessage(null)
-    }, 5000)
-  }, [errorMessage])
-
   const handleLike = async () => {
-    blog.likes = blog.likes + 1
-    await updateBlog(blog.id, { likes: blog.likes })
-    setValues({ ...values, likes: blog.likes })
+    try {
+      blog.likes = blog.likes + 1
+      await updateBlog(blog.id, { likes: blog.likes })
+      setValues({ ...values, likes: blog.likes })
+    }
+    catch (exception) {
+      dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))
+    }
   }
+
 
   const handleDelete = () => {
     if (window.confirm(`Delete blog ${blog.title}?`)) {
-      deleteBlog(blog.id)
+      try {
+        deleteBlog(blog.id)
+      }
+      catch (exception) {
+        dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))
+      }
     }
   }
 
@@ -58,7 +69,6 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
     <div
       className="blog"
       style={blogStyle}>
-      <Notification message={errorMessage} />
       <div className="title">
         {blog.title}
       </div>
