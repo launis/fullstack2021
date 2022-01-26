@@ -8,7 +8,6 @@ const Likes = async  (id, newObject) => {
   const updateUrl = baseUrl+`/${id}`
   const response = await axios.put(updateUrl, newObject, config)
 
-  console.log('response.data' ,response.data)
   return response.data
 }
 

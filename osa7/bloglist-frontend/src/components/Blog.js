@@ -6,9 +6,7 @@ import { setNotification } from '../reducers/notificationReducer'
 
 const notfication_wait = 3
 
-
-
-const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
+const Blog = ({ blog, updateBlog, deleteBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -16,6 +14,10 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
+
+
+  window.localStorage.getItem('loggedBlogappUser')
+  const user = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
 
   const dispatch = useDispatch()
   const [view, setView] = useState(null)

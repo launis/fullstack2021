@@ -5,9 +5,26 @@ import jwt from 'jsonwebtoken'
 
 const router = express.Router()
 
+const validateToken = (token) => {
+  try {
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    if (!token || !decodedToken || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
+    else return (decodedToken.id)
+  } 
+  catch (exception) {
+    throw { 
+      status: 401,
+      message: 'Token missing or invalid',
+      name: 'TokenExpiredError' }
+    }
+}
+
 
 router.get('/info', async (request, response, next) => {
   try {
+    validateToken(request.token)
     const blogs = await Blog.find({})
     response.send(`Amount of blogs: ${blogs.length}<br><br>${Date()}`)
   } catch (exception) {
@@ -17,6 +34,7 @@ router.get('/info', async (request, response, next) => {
 
 router.get('/', async (request, response, next) => {
   try {
+    validateToken(request.token)
     const blogs = await Blog.find({}).populate('user')
     response.json(blogs.map(blog => blog.toJSON()))
   } catch (exception) {
@@ -26,7 +44,8 @@ router.get('/', async (request, response, next) => {
 
 router.get('/:id', async (request, response, next) => {
   try {
-    const blog = await Blog.findById(request.params.id)
+    validateToken(request.token)
+    const blog = await Blog.findById(request.params.id).populate('user')
     if (blog) {
       response.json(blog.toJSON())
     } else {
@@ -40,19 +59,14 @@ router.get('/:id', async (request, response, next) => {
 
 router.post('/', async (request, response, next) => {
   try {
-    
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if (!request.token || !decodedToken || !decodedToken.id) {
-      return response.status(401).json({ error: 'token missing or invalid' })
-    }
-
+    const userid = validateToken(request.token)
     const body = request.body
     const blog = new Blog({
       title: body.title,
       author: body.author,
       url: body.url,
       likes: body.likes,
-      user: decodedToken.id
+      user: userid
     })
 
     const savedBlog = await blog.save()
@@ -68,14 +82,9 @@ router.post('/', async (request, response, next) => {
 
 router.delete('/:id', async (request, response, next) => {
   try {
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if (!request.token || !decodedToken || !decodedToken.id) {
-      return response.status(401).json({ error: 'token missing or invalid' })
-    }
-
+    validateToken(request.token)
     const blog = await Blog.findById(request.params.id)
     const user = await User.findById(request.user)
-
     const blogs = []
     for await (const [key, value] of Object.entries(user.blogs)) {
       if (value !== request.params.id)
@@ -100,12 +109,7 @@ router.delete('/:id', async (request, response, next) => {
 
 router.put('/:id', async (request, response, next) => {
   try {
-    
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if (!request.token || !decodedToken || !decodedToken.id) {
-      return response.status(401).json({ error: 'token missing or invalid' })
-    }
-
+    validateToken(request.token)
     const body = request.body
     if (body.user) {
       const user = await User.findById(body.user)

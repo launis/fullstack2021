@@ -1,70 +1,36 @@
-import React, { useState, useEffect, useRef  } from 'react'
+import React, {  useEffect, useRef } from 'react'
+import { useSelector  } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import BlogForm from '../components/BlogForm'
 import Blog from '../components/Blog'
-import blogService from '../services/blogs'
 import Togglable from '../components/Togglable'
-
-import { useDispatch } from 'react-redux'
-import { setNotification } from '../reducers/notificationReducer'
-
-const notfication_wait = 3
+import { update } from '../reducers/blogReducer'
+import { create, del } from '../reducers/blogReducer'
+import { initialize } from '../reducers/blogReducer'
 
 
-const ShowBlogsForm = ({ user }) => {
-  const [blogs, setBlogs] = useState([])
-  const blogFormRef = useRef()
+// const [blogs, setBlogs] = useState([])
+const ShowBlogsForm = () => {
   const dispatch = useDispatch()
+  const blogFormRef = useRef()
 
-  useEffect(() => {
-    const AllBlogs = async () => {
-      const returnedblogs = await blogService.getAll()
-      setBlogs(returnedblogs.sort((a, b) => b.likes - a.likes))
-    }
-    AllBlogs()
-  }, [])
+  const blogs = useSelector((state) => state.blogs)
+  
+  useEffect( () => {
+    dispatch(initialize())
+  },[dispatch])
 
   const addBlog = async (blogObject) => {
-
-    try {
-      blogFormRef.current.toggleVisibility()
-      if (!blogObject.title || !blogObject.author || !blogObject.url) {
-        dispatch(setNotification({ text: 'All fields needed', type: 'ERROR' }, notfication_wait))
-      }
-
-      const newBlog = await blogService.create(blogObject)
-      const blogs = await blogService.getAll()
-      setBlogs(blogs.sort((a, b) => b.likes - a.likes))
-      dispatch(setNotification({ text: `New ${newBlog.title}`, type: 'SUCCESS' }, notfication_wait))
-    }
-    catch (exception) {
-      dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))
-    }
+    dispatch(create(blogObject))
   }
 
   const updateBlog = async (blogId, blogObject) => {
-    try {
-      await blogService.update(blogId, blogObject)
-      const updatedBlog = { ...blogObject, blogId }
-      setBlogs(
-        blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog)))
-      dispatch(setNotification({ text: `Updated ${blogId}`, type: 'SUCCESS' }, notfication_wait))
-    }
-    catch (exception) {
-      dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))
-    }
+    dispatch(update(blogId, blogObject))
   }
 
   const deleteBlog = async (blogId) => {
-    try {
-      await blogService.del(blogId)
-      setBlogs(blogs.filter((b) => b.id !== blogId))
-      dispatch(setNotification({ text: `Deleted ${blogId}`, type: 'SUCCESS' }, notfication_wait))
-    }
-    catch (exception) {
-      dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))
-    }
+    dispatch(del(blogId))
   }
-
 
   const addForm = () => (
     <Togglable buttonLabel='new blog' ref={blogFormRef}>
@@ -76,11 +42,11 @@ const ShowBlogsForm = ({ user }) => {
     <Blog
       key={blog.id}
       blog={blog}
-      user={user}
       updateBlog={updateBlog}
       deleteBlog={deleteBlog}
     />
   )
+
 
   return (
     <div>

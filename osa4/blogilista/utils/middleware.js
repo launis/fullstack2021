@@ -1,4 +1,3 @@
-/* eslint-disable semi */
 import logger from './logger.js'
 import jwt from 'jsonwebtoken'
 import User from '../models/user.js'
@@ -17,8 +16,8 @@ const unknownEndpoint = (request, response, next) => {
 }
 
 const errorHandler = (error, request, response, next) => {
-  logger.error(error.message)
-
+  logger.error("error.name:", error.name)
+  logger.error("error.message:", error.message)
   if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {

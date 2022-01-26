@@ -9,15 +9,20 @@ const setToken = newToken => {
 }
 
 const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
-}
-
-const create = async newObject => {
   const config = {
     headers: { Authorization: token }
   }
-  const response = await axios.post(baseUrl, newObject, config)
+  const request = axios.get(baseUrl, config)
+  return request.then(response => response.data)
+}
+
+const create = async (newObject) => {
+  const config = {
+    headers: { Authorization: token }
+  }
+  const r = await axios.post(baseUrl, newObject, config)
+  const updateUrl = baseUrl+`/${r.data.id}`
+  const response = await axios.get(updateUrl, config)
   return response.data
 }
 
@@ -39,9 +44,20 @@ const update = async (id, newObject) => {
   return response.data
 }
 
+const get = async (id) => {
+  const config = {
+    headers: { Authorization: token }
+  }
+  const updateUrl = baseUrl+`/${id}`
+  const response = await axios.get(updateUrl, config)
+  return response.data
+}
+
+
 const exportedObject = {
   setToken,
   getAll,
+  get,
   create,
   del,
   update }

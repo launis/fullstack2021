@@ -9,15 +9,12 @@ const NotificationList = () => {
       padding: 10,
       marginBottom: '10px'
     }
-
     return(
       <div style={style}>{notification.text} {notification.type}</div>
-
     )
   }
 
   const notifications = useSelector(state => state.notification)
-  console.log('notifications:', notifications)
 
   return (
     <div>
