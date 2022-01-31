@@ -37,13 +37,16 @@ export const del = (id) => {
   }
 }
 
-export const update = (id, content) => {
+export const addLike = (id) => {
 
   return async dispatch => {
     try {
-      const data = await service.update(id, content)
+      const blog = await service.get(id)
+      const content = { likes : blog.likes + 1 }
+      await service.update(id, content)
+      const data = { id }
       dispatch({
-        type: 'UPDATE BLOG',
+        type: 'LIKE BLOG',
         data
       })
       dispatch(setNotification({ text: `Update ${id}`, type:'DATA' }, notfication_wait))
@@ -54,7 +57,7 @@ export const update = (id, content) => {
   }
 }
 
-export const initialize = () => {
+export const initializeBlogs = () => {
 
   return async dispatch => {
     try {
@@ -63,11 +66,12 @@ export const initialize = () => {
         type: 'INIT BLOG',
         data
       })
+      dispatch(setNotification({ text: 'Initialize blogs', type:'DATA' }, notfication_wait))
     }
     catch (exception) {
       try {
         window.localStorage.removeItem('loggedBlogappUser')
-        dispatch(setNotification({ text: 'Login credentials not anymore valid, refress and login', type: 'ERROR' }, 99))
+        dispatch(setNotification({ text: 'Token expired', type: 'ERROR' }, notfication_wait))
       }
       catch (exception)  {
         dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))
@@ -76,8 +80,21 @@ export const initialize = () => {
   }
 }
 
-const reducer = (state = [], action) => {
+export const emptyBlogs = () => {
 
+  return async dispatch => {
+    try {
+      dispatch({ type: 'EMPTY BLOG' })
+      dispatch(setNotification({ text: 'Empty blogs', type:'DATA' }, notfication_wait))
+    }
+    catch (exception)  {
+      dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))
+    }
+  }
+}
+
+const initialState = []
+const reducer = (state = initialState, action) => {
   switch(action.type) {
   case 'NEW BLOG':
     return [...state, action.data]
@@ -85,8 +102,16 @@ const reducer = (state = [], action) => {
     return (state.filter((s) => s.id !== action.data.id))
   case 'INIT BLOG':
     return action.data
-  case 'UPDATE BLOG':
-    return (state.map((s => (s.id === action.data.id ? action.data : s))))
+  case 'EMPTY BLOG':
+    state = initialState
+    return state
+
+  case 'LIKE BLOG':
+  {
+    const likedBlog = state.find((blog) => blog.id === action.data.id)
+    const updatedBlog = { ...likedBlog, likes: likedBlog.likes + 1, }
+    return state.map((blog) => (blog.id !== action.data.id ? blog : updatedBlog))
+  }
   default:
     return state
   }

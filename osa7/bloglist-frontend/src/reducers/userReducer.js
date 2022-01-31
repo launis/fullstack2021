@@ -37,7 +37,7 @@ export const update = (id, content) => {
 }
 
 
-export const initialize = () => {
+export const initializeUsers = () => {
   return async dispatch => {
     try {
       const data = await service.getAll()
@@ -45,7 +45,7 @@ export const initialize = () => {
         type: 'INIT USER',
         data
       })
-      // dispatch(setNotification({ text: 'Initialize user', type:'DATA' }, notfication_wait))
+      dispatch(setNotification({ text: 'Initialize users', type:'DATA' }, notfication_wait))
     }
     catch (exception) {
       dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))

@@ -1,28 +1,32 @@
-import React, {  useEffect } from 'react'
-import { useSelector  } from 'react-redux'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { initialize } from '../reducers/userReducer'
+import { useSelector  } from 'react-redux'
+import { initializeUsers } from '../reducers/userReducer'
+import { NavLink } from 'react-router-dom'
 
 
-// const [blogs, setBlogs] = useState([])
 const ShowUsersForm = () => {
   const dispatch = useDispatch()
-  const users = useSelector((state) => state.users)
-
   useEffect( () => {
-    dispatch(initialize())
+    dispatch(initializeUsers())
   },[dispatch])
+
+  const users = useSelector((state) => state.users)
 
   return (
     <ul>
       {users.map(user => {
         return (
           <li key={user.id}>
-            {user.name} blogs {user.blogs.length}
+            <NavLink to={`/users/${user.id}`}>
+              {user.name} blogs {user.blogs.length}
+            </NavLink>
           </li>
         )
       })}
     </ul>
   )
 }
+
+
 export default ShowUsersForm

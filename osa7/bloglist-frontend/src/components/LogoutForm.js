@@ -1,10 +1,14 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { logout } from '../reducers/loginReducer'
+// import { useSelector  } from 'react-redux'
 
-const LogoutForm = ({ NewLogout }) => {
+const LogoutForm = () => {
 
+  const dispatch = useDispatch()
   const handleLogout = async (event) => {
     event.preventDefault()
-    NewLogout()
+    dispatch(logout())
   }
 
   return (

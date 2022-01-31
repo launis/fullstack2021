@@ -1,12 +1,6 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
 
-import { useDispatch } from 'react-redux'
-import { setNotification } from '../reducers/notificationReducer'
-
-const notfication_wait = 3
-
-const Blog = ({ blog, updateBlog, deleteBlog }) => {
+const Blog = ({ user, blog, addLike, deleteBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -14,36 +8,17 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-
-
-  window.localStorage.getItem('loggedBlogappUser')
-  const user = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
-
-  const dispatch = useDispatch()
+  if (!user) return null
   const [view, setView] = useState(null)
   const sameuser = user.username === blog.user.username
-  const [values, setValues] = useState({})
 
   const handleLike = async () => {
-    try {
-      blog.likes = blog.likes + 1
-      await updateBlog(blog.id, { likes: blog.likes })
-      setValues({ ...values, likes: blog.likes })
-    }
-    catch (exception) {
-      dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))
-    }
+    await addLike(blog.id)
   }
 
-
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (window.confirm(`Delete blog ${blog.title}?`)) {
-      try {
-        deleteBlog(blog.id)
-      }
-      catch (exception) {
-        dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))
-      }
+      await deleteBlog(blog.id)
     }
   }
 
@@ -93,17 +68,3 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
 }
 
 export default Blog
-
-Blog.propTypes = {
-  blog: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    likes: PropTypes.number,
-  }),
-  user: PropTypes.shape({
-    token: PropTypes.string,
-    username: PropTypes.string,
-    name: PropTypes.string,
-  }),
-}

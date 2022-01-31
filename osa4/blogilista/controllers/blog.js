@@ -24,7 +24,6 @@ const validateToken = (token) => {
 
 router.get('/info', async (request, response, next) => {
   try {
-    validateToken(request.token)
     const blogs = await Blog.find({})
     response.send(`Amount of blogs: ${blogs.length}<br><br>${Date()}`)
   } catch (exception) {
@@ -36,6 +35,7 @@ router.get('/', async (request, response, next) => {
   try {
     validateToken(request.token)
     const blogs = await Blog.find({}).populate('user')
+
     response.json(blogs.map(blog => blog.toJSON()))
   } catch (exception) {
     next(exception)
@@ -80,36 +80,38 @@ router.post('/', async (request, response, next) => {
   }
 })
 
-router.delete('/:id', async (request, response, next) => {
+router.delete('/:id', async (request, response, next) => 
+{
   try {
     validateToken(request.token)
-    const blog = await Blog.findById(request.params.id)
-    const user = await User.findById(request.user)
+    const id = request.params.id
+    const userid = request.user
+    const blog = await Blog.findById(id)
+    const user = await User.findById(userid)
     const blogs = []
     for await (const [key, value] of Object.entries(user.blogs)) {
-      if (value !== request.params.id)
-      {blogs.push(value)}
-    }
-    if ( blog.user.toString() === request.user )
-    {await Blog.findByIdAndRemove(request.params.id)
+      if (value.toString() !== id)
+        {blogs.push(value)}}
+    const body = { blogs : blogs }
+    if ( blog.user.toString() === userid )
+    {
+      await Blog.findByIdAndRemove(id)
+      await User.findByIdAndUpdate(userid, body, { new: true })
       response.status(204).end()}
     else {
       return response.status(401).json({
         error: 'Unauthorized to access the blog',
       })
     }
-
-    await User.findOneAndUpdate(request.params.id,
-      { $set: { blogs : blogs } } , { upsert: true, new: true } )
   } catch (exception) {
     next(exception)
   }
 })
 
-
 router.put('/:id', async (request, response, next) => {
   try {
     validateToken(request.token)
+    const id = request.params.id
     const body = request.body
     if (body.user) {
       const user = await User.findById(body.user)
@@ -117,9 +119,7 @@ router.put('/:id', async (request, response, next) => {
         return response.status(401).json({ error: 'invalid user' })
       }
     }
-
-    const updatedBlog = await Blog.findOneAndUpdate(request.params.id,
-      { $set: body }, { upsert: true, new: true })
+    const updatedBlog = await Blog.findByIdAndUpdate(id, body, { new: true })
     response.json(updatedBlog.toJSON())
   } catch (exception) {
     next(exception)

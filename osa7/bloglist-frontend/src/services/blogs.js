@@ -8,12 +8,12 @@ const setToken = newToken => {
   token = `bearer ${newToken}`
 }
 
-const getAll = () => {
+const getAll = async () => {
   const config = {
     headers: { Authorization: token }
   }
-  const request = axios.get(baseUrl, config)
-  return request.then(response => response.data)
+  const response = await axios.get(baseUrl, config)
+  return response.data
 }
 
 const create = async (newObject) => {

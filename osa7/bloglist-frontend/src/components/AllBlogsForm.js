@@ -1,19 +1,18 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector  } from 'react-redux'
 import { useDispatch } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 import BlogForm from '../components/BlogForm'
-import Blog from '../components/Blog'
 import Togglable from '../components/Togglable'
 import { authorizateUser } from '../reducers/loginReducer'
-import { addLike, create, del } from '../reducers/blogReducer'
+import { create } from '../reducers/blogReducer'
 import { initializeBlogs } from '../reducers/blogReducer'
+
+
 
 const ShowBlogsForm = () => {
   const dispatch = useDispatch()
   const blogFormRef = useRef()
-
-  const user = useSelector((state) => state.login)
-  const blogs = useSelector((state) => state.blogs)
 
 
   useEffect( () => {
@@ -26,16 +25,10 @@ const ShowBlogsForm = () => {
     dispatch(initializeBlogs())
   },[dispatch])
 
+  const blogs = useSelector((state) => state.blogs)
+
   const addBlog = async (blogObject) => {
     dispatch(create(blogObject))
-  }
-
-  const likeBlog = async (blogId) => {
-    dispatch(addLike(blogId))
-  }
-
-  const deleteBlog = async (blogId) => {
-    dispatch(del(blogId))
   }
 
   const addForm = () => (
@@ -44,26 +37,23 @@ const ShowBlogsForm = () => {
     </Togglable>
   )
 
-  const blogForm = (blog) => (
-    <Blog
-      key={blog.id}
-      user={user}
-      blog={blog}
-      addLike={likeBlog}
-      deleteBlog={deleteBlog}
-    />
-  )
-
-
   return (
     <div>
       {addForm()}
       <div>
-        {blogs
-          .sort((a, b) => (a.likes > b.likes ? -1 : 1))
-          .map((blog) => (
-            blogForm(blog)
-          ))}
+        <ul>
+          {blogs
+            .sort((a, b) => (a.likes > b.likes ? -1 : 1))
+            .map((blog) => {
+              return (
+                <li key={blog.id}>
+                  <NavLink to={`/blogs/${blog.id}`}>
+                    {blog.title} {blog.likes}
+                  </NavLink>
+                </li>
+              )
+            })}
+        </ul>
       </div>
     </div>
   )

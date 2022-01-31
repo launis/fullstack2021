@@ -1,65 +1,59 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import Notification from './components/Notification'
-import LogoutForm from './components/LogoutForm'
-import ShowBlogsForm from './components/ShowBlogsForm'
+// import React, { useEffect } from 'react'
+import React from 'react'
+
+import { Routes, Route, NavLink } from 'react-router-dom'
+import AllBlogsForm from './components/AllBlogsForm'
 import ShowLoginForm from './components/ShowLoginForm'
 import ShowUsersForm from './components/ShowUsersForm'
-import blogService from './services/blogs'
-import Togglable from './components/Togglable'
-import PropTypes from 'prop-types'
-import { setNotification } from './reducers/notificationReducer'
-const notfication_wait = 3
+import UserForm from './components/UsersForm'
+import OneBlogForm from './components/OneBlogForm'
+import LogoutForm from './components/LogoutForm'
+import Notification from './components/Notification'
+import { useSelector  } from 'react-redux'
+
 
 const App = () => {
 
-  const dispatch = useDispatch()
-  const [user, setUser] = useState(null)
-  const [storage, setStorage] = useState(null)
+  const user = useSelector((state) => state.login)
 
-  useEffect(() => {
-    setStorage(window.localStorage.getItem('loggedBlogappUser'))
-    if (storage) {
-      const user = JSON.parse(storage)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, [storage])
+  const Navigation = () => {
 
-  const NewLogout = async () => {
-    try {
-      window.localStorage.removeItem('loggedBlogappUser')
-      setUser(null)
-    }
-    catch (exception)  {
-      dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))
-    }
+    return (
+      <nav>
+        <NavLink to="/login">login </NavLink>
+        <NavLink to="/users">users </NavLink>
+        <NavLink to="/blogs">blogs </NavLink>
+        <NavLink to="/logout">logout</NavLink>
+      </nav>)
   }
 
-  if (user === null)
-    return (
-      <>
-        <h1>Blogs</h1>
-        <Notification />
-        <ShowLoginForm />
-      </>
-    )
-  else
-    return(
-      <>
-        <h1>Blogs</h1>
-        <Notification />
-        <Togglable buttonLabel='logout'>
-          <LogoutForm NewLogout={NewLogout} />
-        </Togglable>
-        <ShowBlogsForm/>
-        <ShowUsersForm/>
-      </>
-    )
-}
 
-Togglable.propTypes = {
-  buttonLabel: PropTypes.string.isRequired
+  const NoMatch = () => {
+    return <p>Nothing here</p>
+  }
+
+  return (
+    <>
+      <h1>Blogs</h1>
+      <Notification />
+      <Navigation />
+      {user === null ?
+        <p>No login</p> :
+        <p>{user.name} logged in</p>
+      }
+      <Routes>
+        <Route index element={<ShowLoginForm />} />
+        <Route path="/users/:id" element={<UserForm /> } />
+        <Route path="/blogs/:id" element={<OneBlogForm /> } />
+        <Route path="login" element={<ShowLoginForm />} />
+        <Route path="users" element={<ShowUsersForm />} />
+        <Route path="blogs" element={<AllBlogsForm />} />
+        <Route path="logout" element={<LogoutForm />} />
+        <Route path="*" element={<NoMatch />} />
+      </Routes>
+
+    </>
+  )
 }
 
 export default App
