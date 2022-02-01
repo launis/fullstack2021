@@ -1,5 +1,6 @@
 import service from '../services/blogs'
 import { setNotification } from '../reducers/notificationReducer'
+
 const notfication_wait = 3
 
 export const create = (content) => {
@@ -71,7 +72,8 @@ export const initializeBlogs = () => {
     catch (exception) {
       try {
         window.localStorage.removeItem('loggedBlogappUser')
-        dispatch(setNotification({ text: 'Token expired', type: 'ERROR' }, notfication_wait))
+        dispatch(emptyBlogs())
+        dispatch(setNotification({ text: 'Token expired, refress', type: 'ERROR' }, notfication_wait))
       }
       catch (exception)  {
         dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))

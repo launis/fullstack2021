@@ -1,7 +1,5 @@
-// import React, { useEffect } from 'react'
 import React from 'react'
-
-import { Routes, Route, NavLink } from 'react-router-dom'
+import { Routes, Route, Link } from 'react-router-dom'
 import AllBlogsForm from './components/AllBlogsForm'
 import ShowLoginForm from './components/ShowLoginForm'
 import ShowUsersForm from './components/ShowUsersForm'
@@ -14,19 +12,18 @@ import { useSelector  } from 'react-redux'
 
 const App = () => {
 
-  const user = useSelector((state) => state.login)
+  const login = useSelector((state) => state.login)
 
   const Navigation = () => {
 
     return (
       <nav>
-        <NavLink to="/login">login </NavLink>
-        <NavLink to="/users">users </NavLink>
-        <NavLink to="/blogs">blogs </NavLink>
-        <NavLink to="/logout">logout</NavLink>
+        <Link to="/login">login </Link>
+        <Link to="/users">users </Link>
+        <Link to="/blogs">blogs </Link>
+        <Link to="/logout">logout</Link>
       </nav>)
   }
-
 
   const NoMatch = () => {
     return <p>Nothing here</p>
@@ -37,9 +34,9 @@ const App = () => {
       <h1>Blogs</h1>
       <Notification />
       <Navigation />
-      {user === null ?
+      {login === null ?
         <p>No login</p> :
-        <p>{user.name} logged in</p>
+        <p>{login.name} logged in</p>
       }
       <Routes>
         <Route index element={<ShowLoginForm />} />

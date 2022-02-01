@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 
 const LoginForm = ({ NewLogin }) => {
+  const navigate = useNavigate()
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -9,6 +13,7 @@ const LoginForm = ({ NewLogin }) => {
     NewLogin({ username, password })
     setUsername('')
     setPassword('')
+    navigate('/')
   }
 
   return (

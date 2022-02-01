@@ -3,17 +3,24 @@ import { useDispatch } from 'react-redux'
 import { useSelector  } from 'react-redux'
 import { useMatch } from 'react-router-dom'
 import { initializeUsers } from '../reducers/userReducer'
-
+import { authorizateUser } from '../reducers/loginReducer'
 
 const UserForm = () => {
   const dispatch = useDispatch()
+
+  useEffect( () => {
+    dispatch(authorizateUser())
+  },[dispatch])
+
+  const login = useSelector((state) => state.login)
+  if (!login) return null
+
   useEffect( () => {
     dispatch(initializeUsers())
   },[dispatch])
 
   const users = useSelector((state) => state.users)
   const match = useMatch('/users/:id')
-  console.log('match', match)
   const user = match
     ? users.find((user) => user.id === match.params.id)
     : null
