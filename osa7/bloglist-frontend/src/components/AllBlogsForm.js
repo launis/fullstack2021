@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+// import { Table } from 'react-bootstrap'
 import { useSelector  } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
@@ -13,11 +14,10 @@ const ShowBlogsForm = () => {
 
   const dispatch = useDispatch()
   const blogFormRef = useRef()
+
   useEffect( () => {
     dispatch(authorizateUser())
   },[dispatch])
-  const login = useSelector((state) => state.login)
-  if (!login) return null
 
   useEffect( () => {
     dispatch(initializeBlogs())
@@ -27,6 +27,9 @@ const ShowBlogsForm = () => {
   const addBlog = async (blogObject) => {
     dispatch(create(blogObject))
   }
+
+  const login = useSelector((state) => state.login)
+  if (!login) return null
 
   const addForm = () => (
     <Togglable buttonLabel='new blog' ref={blogFormRef}>
@@ -38,21 +41,17 @@ const ShowBlogsForm = () => {
     <div>
       <LoginUser />
       {addForm()}
-      <div>
-        <ul>
-          {blogs
-            .sort((a, b) => (a.likes > b.likes ? -1 : 1))
-            .map((blog) => {
-              return (
-                <li key={blog.id}>
-                  <NavLink to={`/blogs/${blog.id}`}>
-                    {blog.title} {blog.likes}
-                  </NavLink>
-                </li>
-              )
-            })}
-        </ul>
-      </div>
+      {blogs
+        .sort((a, b) => (a.likes > b.likes ? -1 : 1))
+        .map((blog) => {
+          return (
+            <li key={blog.id}>
+              <NavLink to={`/blogs/${blog.id}`}>
+                {blog.title} {blog.likes}
+              </NavLink>
+            </li>
+          )
+        })}
     </div>
   )
 }

@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react'
+import React  from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector  } from 'react-redux'
 import { useMatch } from 'react-router-dom'
-import { initializeBlogs } from '../reducers/blogReducer'
-import { authorizateUser } from '../reducers/loginReducer'
 import { addLike, del } from '../reducers/blogReducer'
 import Togglable from '../components/Togglable'
 import CommentForm from '../components/CommentForm'
@@ -12,7 +10,7 @@ import LoginUser from '../components/LoginUser'
 const OneBlogForm = () => {
   const dispatch = useDispatch()
 
-
+  console.log(1)
   const handleLike = async () => {
     dispatch(addLike(blog.id))
   }
@@ -30,16 +28,6 @@ const OneBlogForm = () => {
     </Togglable>
   )
 
-  useEffect( () => {
-    dispatch(authorizateUser())
-  },[dispatch])
-
-  useEffect( () => {
-    dispatch(initializeBlogs())
-  },[dispatch])
-
-
-
   const blogs = useSelector((state) => state.blogs)
   const login = useSelector((state) => state.login)
   const match = useMatch('/blogs/:id')
@@ -50,6 +38,11 @@ const OneBlogForm = () => {
   if (!blog) {
     return null
   }
+
+  if (!login) {
+    return null
+  }
+
   const sameuser = login.username === blog.user.username
 
   return (

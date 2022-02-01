@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Form, Button } from 'react-bootstrap'
 import LoginUser from '../components/LoginUser'
 
 const LoginForm = ({ NewLogin }) => {
@@ -7,6 +8,7 @@ const LoginForm = ({ NewLogin }) => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -19,31 +21,31 @@ const LoginForm = ({ NewLogin }) => {
   return (
     <div>
       <LoginUser />
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-                username
-          <input
+      <h2>login</h2>
+      <Form onSubmit={handleLogin}>
+        <Form.Group>
+          <Form.Label>username:</Form.Label>
+          <Form.Control
             id='username'
             type='username'
             value={username}
             onChange={({ target }) => setUsername(target.value)}
           />
-        </div>
-        <div>
-                password
-          <input
+          <Form.Label>password:</Form.Label>
+          <Form.Control
             id='password'
             type='password'
             value={password}
             onChange={({ target }) => setPassword(target.value)}
           />
-        </div>
-        <button id="login-button" type="submit">login</button>
-      </form>
-    </div>
-  )
+          <Button variant="primary" type="submit">
+      login
+          </Button>
+        </Form.Group>
+      </Form>
+    </div>  )
 }
+
 
 
 export default LoginForm
