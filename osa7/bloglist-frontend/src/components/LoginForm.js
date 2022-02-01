@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import LoginUser from '../components/LoginUser'
 
 const LoginForm = ({ NewLogin }) => {
   const navigate = useNavigate()
@@ -18,6 +18,7 @@ const LoginForm = ({ NewLogin }) => {
 
   return (
     <div>
+      <LoginUser />
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div>

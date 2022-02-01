@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { logout } from '../reducers/loginReducer'
 import { useNavigate } from 'react-router-dom'
+import LoginUser from '../components/LoginUser'
 
 const LogoutForm = () => {
 
@@ -16,9 +17,12 @@ const LogoutForm = () => {
   }
 
   return (
-    <button onClick={handleLogout}>
+    <div>
+      <LoginUser />
+      <button onClick={handleLogout}>
         sure to logout
-    </button>
+      </button>
+    </div>
   )
 }
 

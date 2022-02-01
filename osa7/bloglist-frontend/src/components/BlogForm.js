@@ -1,25 +1,30 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-
 
 const BlogForm = ({ addBlog }) => {
   const [title, newTitle] = useState('')
   const [author, newAuthor] = useState('')
   const [url, newUrl] = useState('')
   const [likes, newLikes] = useState(0)
+  const [comments, newComments] = useState([])
 
 
   const HandleAddBlog = (event) => {
+
     event.preventDefault()
     addBlog ( {
       title,
       author,
       url,
-      likes })
+      likes,
+      comments })
     newTitle('')
     newAuthor('')
     newUrl('')
-    newLikes(0)}
+    newLikes(0)
+    newComments([])
+    console.log(comments)
+    console.log(url)
+  }
 
   return (
     <form onSubmit={HandleAddBlog}>
@@ -60,12 +65,3 @@ const BlogForm = ({ addBlog }) => {
   )
 }
 export default BlogForm
-
-BlogForm.propTypes = {
-  blog: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    likes: PropTypes.number,
-  }),
-}

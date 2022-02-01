@@ -58,6 +58,27 @@ export const addLike = (id) => {
   }
 }
 
+export const addComment = (id, content) => {
+
+  return async dispatch => {
+    try {
+      const blog = await service.get(id)
+      const data = { id, comments: [...blog.comments, content] }
+      await service.update(id, data)
+      dispatch({
+        type: 'COMMENT BLOG',
+        data
+      })
+      dispatch(setNotification({ text: `Update ${id}`, type:'DATA' }, notfication_wait))
+    }
+    catch (exception) {
+      dispatch(setNotification({ text: exception.message, type: 'ERROR' }, notfication_wait))
+    }
+  }
+}
+
+
+
 export const initializeBlogs = () => {
 
   return async dispatch => {
@@ -108,10 +129,16 @@ const reducer = (state = initialState, action) => {
     state = initialState
     return state
 
+  case 'COMMENT BLOG':
+  {
+    const currentBlog = state.find((blog) => blog.id === action.data.id)
+    const updatedBlog = { ...currentBlog, comments: action.data.comments, }
+    return state.map((blog) => (blog.id !== action.data.id ? blog : updatedBlog))
+  }
   case 'LIKE BLOG':
   {
-    const likedBlog = state.find((blog) => blog.id === action.data.id)
-    const updatedBlog = { ...likedBlog, likes: likedBlog.likes + 1, }
+    const currentBlog = state.find((blog) => blog.id === action.data.id)
+    const updatedBlog = { ...currentBlog, likes: currentBlog.likes + 1, }
     return state.map((blog) => (blog.id !== action.data.id ? blog : updatedBlog))
   }
   default:

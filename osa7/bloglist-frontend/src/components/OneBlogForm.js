@@ -5,10 +5,13 @@ import { useMatch } from 'react-router-dom'
 import { initializeBlogs } from '../reducers/blogReducer'
 import { authorizateUser } from '../reducers/loginReducer'
 import { addLike, del } from '../reducers/blogReducer'
-
+import Togglable from '../components/Togglable'
+import CommentForm from '../components/CommentForm'
+import LoginUser from '../components/LoginUser'
 
 const OneBlogForm = () => {
   const dispatch = useDispatch()
+
 
   const handleLike = async () => {
     dispatch(addLike(blog.id))
@@ -20,6 +23,13 @@ const OneBlogForm = () => {
     }
   }
 
+  const newComment = () => (
+    <Togglable buttonLabel='new comment' >
+      <CommentForm
+        id={blog.id} />
+    </Togglable>
+  )
+
   useEffect( () => {
     dispatch(authorizateUser())
   },[dispatch])
@@ -28,9 +38,10 @@ const OneBlogForm = () => {
     dispatch(initializeBlogs())
   },[dispatch])
 
+
+
   const blogs = useSelector((state) => state.blogs)
   const login = useSelector((state) => state.login)
-
   const match = useMatch('/blogs/:id')
   const blog = match
     ? blogs.find((blog) => blog.id === match.params.id)
@@ -42,7 +53,8 @@ const OneBlogForm = () => {
   const sameuser = login.username === blog.user.username
 
   return (
-    <>
+    <div>
+      <LoginUser />
       <p>{blog.title}</p>
       <p>{blog.author}</p>
       <p>{blog.url}</p>
@@ -58,7 +70,28 @@ const OneBlogForm = () => {
                 <button onClick={handleDelete}>
                     delete
                 </button>}
-    </>
+
+
+      <h2 >Added comments</h2>
+      {blog.comments.length === 0
+        ?
+        (
+          <>
+            <p>Add first comment</p>
+            {newComment()}
+          </>
+        )
+        :
+        (
+          <ul>
+            {newComment()}
+            {blog.comments.map((comment, index) => (
+              <li key={index}>{comment}</li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
   )
 }
 

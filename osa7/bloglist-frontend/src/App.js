@@ -7,12 +7,9 @@ import UserForm from './components/UsersForm'
 import OneBlogForm from './components/OneBlogForm'
 import LogoutForm from './components/LogoutForm'
 import Notification from './components/Notification'
-import { useSelector  } from 'react-redux'
 
 
 const App = () => {
-
-  const login = useSelector((state) => state.login)
 
   const Navigation = () => {
 
@@ -34,10 +31,7 @@ const App = () => {
       <h1>Blogs</h1>
       <Notification />
       <Navigation />
-      {login === null ?
-        <p>No login</p> :
-        <p>{login.name} logged in</p>
-      }
+
       <Routes>
         <Route index element={<ShowLoginForm />} />
         <Route path="/users/:id" element={<UserForm /> } />

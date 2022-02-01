@@ -7,18 +7,16 @@ import Togglable from '../components/Togglable'
 import { authorizateUser } from '../reducers/loginReducer'
 import { create } from '../reducers/blogReducer'
 import { initializeBlogs } from '../reducers/blogReducer'
-
+import LoginUser from '../components/LoginUser'
 
 const ShowBlogsForm = () => {
 
   const dispatch = useDispatch()
   const blogFormRef = useRef()
-
   useEffect( () => {
     dispatch(authorizateUser())
   },[dispatch])
-
-  const login = useSelector((state) => state.blogs)
+  const login = useSelector((state) => state.login)
   if (!login) return null
 
   useEffect( () => {
@@ -38,6 +36,7 @@ const ShowBlogsForm = () => {
 
   return (
     <div>
+      <LoginUser />
       {addForm()}
       <div>
         <ul>

@@ -3,17 +3,10 @@ import { useDispatch } from 'react-redux'
 import { useSelector  } from 'react-redux'
 import { useMatch } from 'react-router-dom'
 import { initializeUsers } from '../reducers/userReducer'
-import { authorizateUser } from '../reducers/loginReducer'
+import LoginUser from '../components/LoginUser'
 
 const UserForm = () => {
   const dispatch = useDispatch()
-
-  useEffect( () => {
-    dispatch(authorizateUser())
-  },[dispatch])
-
-  const login = useSelector((state) => state.login)
-  if (!login) return null
 
   useEffect( () => {
     dispatch(initializeUsers())
@@ -30,7 +23,8 @@ const UserForm = () => {
   }
 
   return (
-    <>
+    <div>
+      <LoginUser />
       <h1 >{user.name}</h1>
       <h2 >Added blogs</h2>
       {user.blogs.length === 0
@@ -49,7 +43,8 @@ const UserForm = () => {
           </ul>
         )
       }
-    </>
+
+    </div>
   )
 }
 

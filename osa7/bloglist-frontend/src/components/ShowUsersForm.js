@@ -3,9 +3,10 @@ import { useDispatch } from 'react-redux'
 import { useSelector  } from 'react-redux'
 import { initializeUsers } from '../reducers/userReducer'
 import { NavLink } from 'react-router-dom'
-
+import LoginUser from '../components/LoginUser'
 
 const ShowUsersForm = () => {
+
   const dispatch = useDispatch()
   useEffect( () => {
     dispatch(initializeUsers())
@@ -14,17 +15,20 @@ const ShowUsersForm = () => {
   const users = useSelector((state) => state.users)
 
   return (
-    <ul>
-      {users.map(user => {
-        return (
-          <li key={user.id}>
-            <NavLink to={`/users/${user.id}`}>
-              {user.name} blogs {user.blogs.length}
-            </NavLink>
-          </li>
-        )
-      })}
-    </ul>
+    <div>
+      <LoginUser />
+      <ul>
+        {users.map(user => {
+          return (
+            <li key={user.id}>
+              <NavLink to={`/users/${user.id}`}>
+                {user.name} blogs {user.blogs.length}
+              </NavLink>
+            </li>
+          )
+        })}
+      </ul>
+    </div>
   )
 }
 
