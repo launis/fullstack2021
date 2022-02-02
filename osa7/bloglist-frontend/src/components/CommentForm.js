@@ -2,11 +2,10 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addComment } from '../reducers/blogReducer'
 
-
-
 const CommentForm = ( { id } ) => {
-  const [comment, newComment] = useState('')
   const dispatch = useDispatch()
+
+  const [comment, newComment] = useState('')
 
   const HandleAddComment = (event) => {
     event.preventDefault()

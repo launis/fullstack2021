@@ -9,31 +9,23 @@ import LogoutForm from './components/LogoutForm'
 import Notification from './components/Notification'
 import { Nav, Navbar } from 'react-bootstrap'
 
-
-
 const App = () => {
 
   const Navigation = () => {
-
     return (
-
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav>
-
             <Link to="/login">login  </Link>
             <Link to="/users">users  </Link>
             <Link to="/blogs">blogs  </Link>
             <Link to="/logout">logout</Link>
-
           </Nav>
         </Navbar.Collapse>
       </Navbar>
     )
   }
-
-
 
   const NoMatch = () => {
     return <p>Nothing here</p>

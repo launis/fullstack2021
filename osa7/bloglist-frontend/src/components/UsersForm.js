@@ -18,9 +18,7 @@ const UserForm = () => {
     ? users.find((user) => user.id === match.params.id)
     : null
 
-  if (!user) {
-    return null
-  }
+  if (!user) return null
 
   return (
     <div>
@@ -28,10 +26,7 @@ const UserForm = () => {
       <h1 >{user.name}</h1>
       <h2 >Added blogs</h2>
       {user.blogs.length === 0
-        ?
-        (
-          <p>No blogs</p>
-        )
+        ? <p>No blogs</p>
         :
         (
           <ul>
@@ -43,7 +38,6 @@ const UserForm = () => {
           </ul>
         )
       }
-
     </div>
   )
 }
