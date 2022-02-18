@@ -1,0 +1,16 @@
+{
+  "name": "library-graphql",
+  "version": "1.0.0",
+  "description": "graphql library backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Risto Launis",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.6.3",
+    "graphql": "^16.3.0"
+  }
+}
